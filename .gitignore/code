@@ -1,18 +1,18 @@
 import numpy as np
-import urllib2
+import urllib.request
 import os
-text_data = urllib2.urlopen('http://www.gutenberg.org/cache/epub/408/pg408.txt').read()
+text_data = urllib.request.urlopen('http://www.gutenberg.org/cache/epub/408/pg408.txt').read()
 os.chdir('/Users/Lib/Desktop/')
 file = open('text_data.txt', 'w+')
-file.write(text_data)
+text_text = str(text_data)
+file.write(text_text)
 
 ##Go ahead and open the file. What's the purpose of the formating?  
 
-document_split = text_data.split('\n\n\n\n\n')
+document_split = text_text.split('\n\n\n\n\n')
 from sklearn.feature_extraction.text import CountVectorizer
 vectorizer = CountVectorizer()
 X = vectorizer.fit_transform(document_split)
-doc_vector = X.toarray()
 vocabulary = vectorizer.get_feature_names()
 vocabulary
 import lda
@@ -23,7 +23,7 @@ topic_word = model.topic_word_
 n_top_words=50
 
 for i, topic_distribution in enumerate(topic_word):
-  topic_words = np.array(vocabular)[np.argsort(topic_distribution)][:-(n_top_words+1):-1]
+  topic_words = np.array(vocabulary)[np.argsort(topic_distribution)][:-(n_top_words+1):-1]
   print('topic {}: {}'.format(i, ' '.join(topic_words)))
   print()
   
