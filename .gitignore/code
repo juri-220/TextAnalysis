@@ -1,0 +1,30 @@
+import numpy as np
+import urllib2
+import os
+text_data = urllib2.urlopen('http://www.gutenberg.org/cache/epub/408/pg408.txt').read()
+os.chdir('/Users/Lib/Desktop/')
+file = open('text_data.txt', 'w+')
+file.write(text_data)
+
+##Go ahead and open the file. What's the purpose of the formating?  
+
+document_split = text_data.split('\n\n\n\n\n')
+from sklearn.feature_extraction.text import CountVectorizer
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(document_split)
+doc_vector = X.toarray()
+vocabulary = vectorizer.get_feature_names()
+vocabulary
+import lda
+model = lda.LDA(n_topics = 10, n_iter=1000, random_state=1)
+model.fit(X)
+
+topic_word = model.topic_word_
+n_top_words=50
+
+for i, topic_distribution in enumerate(topic_word):
+  topic_words = np.array(vocabular)[np.argsort(topic_distribution)][:-(n_top_words+1):-1]
+  print('topic {}: {}'.format(i, ' '.join(topic_words)))
+  print()
+  
+ ##What do these topics mean?
