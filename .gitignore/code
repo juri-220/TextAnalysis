@@ -2,22 +2,28 @@ import numpy as np
 import urllib.request
 import os
 text_data = urllib.request.urlopen('http://www.gutenberg.org/cache/epub/408/pg408.txt').read()
-os.chdir('/Users/Lib/Desktop/')
-file = open('text_data.txt', 'w+')
-text_text = str(text_data)
-file.write(text_text)
+
+os.chdir('/Users/shuninglu/desktop')
+file = open('text_data.txt', 'w+') #writable 
+text_text = str(text_data) #treat this as a number not a string
+file.write(text_text) 
 
 ##Go ahead and open the file. What's the purpose of the formating?  
 
 document_split = text_text.split('\n\n\n\n\n')
 from sklearn.feature_extraction.text import CountVectorizer
-vectorizer = CountVectorizer()
-X = vectorizer.fit_transform(document_split)
+vectorizer = CountVectorizer() #counting words according to documents
+X = vectorizer.fit_transform(document_split) #turn it into a multi-dimensional array of words and counts
 vocabulary = vectorizer.get_feature_names()
 vocabulary
+
+#I go to ibook and input !pip install lda
+
 import lda
 model = lda.LDA(n_topics = 10, n_iter=1000, random_state=1)
 model.fit(X)
+
+#lda has three assumptions: order does not matter; word meaning does not vary across contexts;
 
 topic_word = model.topic_word_
 n_top_words=50
@@ -28,3 +34,5 @@ for i, topic_distribution in enumerate(topic_word):
   print()
   
  ##What do these topics mean?
+ 
+ ##how to remove stop words
